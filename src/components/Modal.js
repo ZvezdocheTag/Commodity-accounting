@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Modal, Button } from 'react-bootstrap'
 
+
 export const Modale = (props) => {
   return (
         <Modal show={props.showModal} onHide={props.close}>
@@ -11,9 +12,9 @@ export const Modale = (props) => {
           <Modal.Body>
               {props.children}
           </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={props.close}>Close</Button>
-          </Modal.Footer>
         </Modal>
   )
 }
+          // <Modal.Footer>
+          //   <Button onClick={props.close}>Close</Button>
+          // </Modal.Footer>
