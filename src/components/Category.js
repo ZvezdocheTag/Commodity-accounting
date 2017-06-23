@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-const Item = (props) => (<li className="category-list__item">
-    <a href="#">x</a>
-    <a href="">{`Category ${props.title}`}</a>
+const Item = (props) => (<li className="category-list__item category-item">
+    <a className="category-item__delete" href="#">x</a>
+    <a className="category-item__link" href="">{`Category ${props.title}`}</a>
 </li>)
 
 export const List = () => {
@@ -11,7 +11,7 @@ export const List = () => {
     return (
         <ul className="category-list">
             {
-                arr.map(item => <Item title={item}/>)
+                arr.map((item,i) => <Item title={item} key={i}/>)
             }
         </ul>
     )
