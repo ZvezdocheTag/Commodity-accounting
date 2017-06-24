@@ -66,6 +66,7 @@ export class Layout extends React.Component {
   }
 
   render() {
+    console.log(this.props.category, "INN COMPONENT")
     return <div >
             <Grid>
               <div className="header">

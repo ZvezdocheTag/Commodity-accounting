@@ -7,7 +7,8 @@ const Buttonset = () => (    <ButtonToolbar>
     </ButtonToolbar>)
 
 
-export const GoodsTable = () => (
+export const GoodsTable = (props) => {
+  return (
   <Table striped bordered condensed hover>
     <thead>
       <tr>
@@ -31,3 +32,4 @@ export const GoodsTable = () => (
     </tbody>
   </Table>
 );
+}
