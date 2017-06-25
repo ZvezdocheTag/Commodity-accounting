@@ -1,0 +1,22 @@
+html
+    head
+        title Person
+    body
+        form(action="/person", method="POST")
+            div
+                label(for="name") Name: 
+                input(name="name")
+            br
+            div
+                label(for="category") category: 
+                input(name="category")
+            br
+            div
+                label(for="price") price: 
+                input(name="price")
+            br
+            div
+                label(for="retail") retail: 
+                input(name="retail")
+            br
+            button(type="submit") Create new person
