@@ -15,8 +15,8 @@ export const requestData = (data) => ({
 
 export function fetchData() {
     return function(dispatch) {
-        return fetch('testdata.json')
-                .then(response => response.json(),
+        return fetch('/data')
+                .then(response => { console.log(response); return response.json()},
                 error => console.log("Error occure", error))
                 .then(json =>
                 dispatch(requestData(json)))

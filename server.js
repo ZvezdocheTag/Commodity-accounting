@@ -55,8 +55,21 @@ router.get('/', (ctx) => {
     // ctx.body = "Page are created"
 })
 
-router.get('/data',  function(ctx) {
+
+
+router.get('/data',   async function(ctx) {
+   let database = [];
    
+    await Good.find({}, function(err, teams) {
+    if (err) {
+      console.log(err)
+    } else {
+        ctx.body = teams
+        // console.log(ctx.response.body)
+    }
+  }); 
+
+
 })
 
 app.use(router.routes());
