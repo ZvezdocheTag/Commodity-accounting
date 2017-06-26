@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "node --harmony server.js",
+    "server": "nodemon --harmony server.js",
     "client": "node start-client.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

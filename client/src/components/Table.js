@@ -8,6 +8,15 @@ const Buttonset = () => (    <ButtonToolbar>
 
 
 export const GoodsTable = (props) => {
+  let goods = props.goods;
+  console.log(props.all, "ALL")
+  if(typeof goods === "undefined") {
+    return (<div>Sorry no data here</div>)
+  }
+  if(props.all.newGood.length) {
+    // goods= goods.concat(props.all.newGood)
+  }
+  console.log(goods)
   return (
   <Table striped bordered condensed hover>
     <thead>
@@ -20,15 +29,25 @@ export const GoodsTable = (props) => {
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>1</td>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-        <td>
-            <Buttonset />
-        </td>
-      </tr>
+      {
+        goods.map((item, i) => 
+        {
+          const isa = item.goods[0];
+          console.log(isa)
+        return (
+          <tr key={i}>
+            <td data-id={typeof item._id === "undefine" ? i : item._id}>{`${i}`}</td>
+            <td>{isa.name}</td>
+            <td>{isa.price}</td>
+            <td>{isa.retailPrice}</td>
+            <td>
+                <Buttonset />
+            </td>
+          </tr>
+        )
+        })
+      }
+
     </tbody>
   </Table>
 );

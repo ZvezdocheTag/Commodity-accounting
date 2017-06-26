@@ -17,29 +17,33 @@ mongoose.connect('mongodb://localhost/db');
 const Schema = mongoose.Schema;
 const schemaGood = new Schema({
     category: String,
-    name: String,
+    goods: [{name: String,
     price: Number,
-    retailPrice: Number
+    retailPrice: Number}]
 })
 
 const Good = mongoose.model('Good', schemaGood)
 
 
-router.get('/', (ctx) => {
+router.get('/sew', (ctx) => {
     ctx.render('few')
 }).post('/person',async function (ctx) {
     const good = ctx.request.body;
-    if(!good.name || !good.category || !good.price || !good.retail) {
+    console.log(good.goods[0])
+    if(!good.goods[0].name || !good.category || !good.goods[0].price || !good.goods[0].retail) {
         console.log("GE")
         ctx.render('show_message', {message: "Sorry, you provided wrong info", type: "error"});
     } else {
         
         let newGood = new Good({
             category: good.category,
-            name: good.name,
-            price: good.price,
-            retailPrice: good.retail
+            goods: [{            
+                name: good.goods[0].name,
+                price: good.goods[0].price,
+                retailPrice: good.goods[0].retail
+            }]
         })
+
         console.log(newGood)
         await newGood.save((err, res) => {
             if(err) {
@@ -47,7 +51,9 @@ router.get('/', (ctx) => {
                  ctx.render('show_message', {message: "Database error", type: "error"});
             } else {
                 console.log("Good")
-                ctx.render('show_message', {message: "New person added again", type: "success", good: good});
+                console.log(ctx)
+                // ctx.render('show_message', {message: "New person added again", type: "success", good: good});
+                ctx.response.body = res;
             }
         })
     }
@@ -71,6 +77,7 @@ router.get('/data',   async function(ctx) {
 
 
 })
+
 
 app.use(router.routes());
 app.listen(3003);

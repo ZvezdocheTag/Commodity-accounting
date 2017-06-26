@@ -2,40 +2,45 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import {Layout} from './components'
 import './App.css';
-import {fetchData} from './actions'
+import {fetchPost, requestData, addGood} from './actions'
 import { connect} from 'react-redux'
-
-
-// store.dispatch(fetchData()).then(() => console.log(store.getState()))
+import { bindActionCreators } from 'redux'
 
 class App extends Component {
-  componentDidMount() {
-    // console.log(this)
-    // console.log(this.props.fetchData().then(() => console.log()) , "INNER")
-  }
   render() {
-    
+   
     return (
       <div className="App">
-        <Layout category={this.props.goodies}/>
+        <Layout category={this.props}/>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
+
+
+const mapStateToProps = (state, ownProps) => {
   return state
 }
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     fetchData : () => dispatch(fetchData())
-//   }
-// }
+const mapDispatchToProps = (dispatch, ownProps) => {
+  // console.log(dispatch, ownProps, "SOME")
+  return {
+    fetchPost : () => {   
+      dispatch(fetchPost()).then(response => { console.log(response); return response.json()},
+                error => console.log("Error occure", error))
+                .then(json => dispatch(requestData(json)))
+    },
+    addGood: (data) => {
+
+      dispatch(addGood(data))
+    }
+  }
+}
 
 export default connect(
   mapStateToProps,
-  // mapDispatchToProps
+  mapDispatchToProps
 )(App)
 
 // export default App;

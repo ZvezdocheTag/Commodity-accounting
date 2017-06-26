@@ -8,25 +8,64 @@ import {List} from './Category'
 import {Modale} from './Modal'
 
 
-const MWcontentForm = () => {
+
+
+
+const MWcontentForm = (props) => {
+
+  let actionValue = (e) => {
+      let self = this;
+      e.preventDefault();
+    // console.log(props, e.target.value, "ACTION")
+      let category = e.target.querySelector('[name="category"]').value;
+      let name = e.target.querySelector('[name="name"]').value;
+      let price = e.target.querySelector('[name="price"]').value;
+      let retail = e.target.querySelector('[name="retail"]').value;
+      // console.log(category, name, price, retail, "ACTION")
+    
+      props.action({
+          name: name,
+          category: category,
+          price: price,
+          retail: retail
+      })
+      // fetch('/person', {
+      //   method: 'POST',
+      //   data: {
+      //     name: name,
+      //     category: category,
+      //     price: price,
+      //     retail: retail
+      //   }
+      // })
+
+      // props.action({
+      //   select: 
+      // })
+    // dispatch(props.action.category.addGood({"SANSE": 1, "d": 2}))
+  }
+
   return (
     <div>
-      <form>
+      <form onSubmit={actionValue} >
             <FormGroup> 
-              <FormControl componentClass="select" placeholder="select">
+              <FormControl componentClass="select" name="category"  placeholder="select">
                 <option value="select">select</option>
-                <option value="other">...</option>
+                <option value="fruit">.fruit..</option>
+                <option value="vegetable">..vegetable.</option>
+                <option value="other">...other</option>
               </FormControl>   
             </FormGroup>
             <FormGroup> 
-              <FormControl type="text" placeholder="Enter text" />
+              <FormControl type="text" name="name"  placeholder="Enter text" />
             </FormGroup>
             <FormGroup> 
-              <FormControl type="text" placeholder="Enter text" />
+              <FormControl type="text" name="price"  placeholder="Enter text" />
             </FormGroup>
             <FormGroup> 
-              <FormControl type="text" placeholder="Enter text" />
+              <FormControl type="text" name="retail"  placeholder="Enter text" />
             </FormGroup>
+            <button type="submit">Send</button>
       </form>
     </div>
   )
@@ -66,7 +105,7 @@ export class Layout extends React.Component {
   }
 
   render() {
-    console.log(this.props.category, "INN COMPONENT")
+    console.log(this, "INN COMPONENT")
     return <div >
             <Grid>
               <div className="header">
@@ -88,13 +127,13 @@ export class Layout extends React.Component {
                         <List />
                     </Col>
                     <Col xs={12} md={9} className="content">
-                        <GoodsTable />
+                        <GoodsTable goods={this.props.category.goodies.good} all={this.props.category.goodies}/>
                     </Col>
                 </Row>
               </div>
             </Grid>
             <Modale close={this.close.bind(this)} showModal={this.state.showModal}>
-              {this.state.formType ? <MWcontentForm /> : <MWcontentText /> }
+              {this.state.formType ? <MWcontentForm action={this.props.category.addGood} /> : <MWcontentText /> }
             </Modale> 
         </div>
     
