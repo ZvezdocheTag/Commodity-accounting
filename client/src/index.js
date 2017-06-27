@@ -13,9 +13,7 @@ import {fetchData, addGood} from './actions'
 const store = createStore(rootReducer,
     applyMiddleware(thunk))
 
-
 store.dispatch(fetchData()).then(() => store.getState())
-// store.dispatch(addGood({"DUFUU": 21}))
 
 ReactDOM.render(
     <Provider store={store}>

@@ -29,9 +29,7 @@ router.get('/sew', (ctx) => {
     ctx.render('few')
 }).post('/person',async function (ctx) {
     const good = ctx.request.body;
-    console.log(good.goods[0])
     if(!good.goods[0].name || !good.category || !good.goods[0].price || !good.goods[0].retail) {
-        console.log("GE")
         ctx.render('show_message', {message: "Sorry, you provided wrong info", type: "error"});
     } else {
         
@@ -44,21 +42,57 @@ router.get('/sew', (ctx) => {
             }]
         })
 
-        console.log(newGood)
         await newGood.save((err, res) => {
             if(err) {
-                console.log(err)
                  ctx.render('show_message', {message: "Database error", type: "error"});
             } else {
-                console.log("Good")
-                console.log(ctx)
-                // ctx.render('show_message', {message: "New person added again", type: "success", good: good});
                 ctx.response.body = res;
             }
         })
     }
-    // console.log()
-    // ctx.body = "Page are created"
+})
+.put('/person', async function(ctx) {
+    let good = ctx.request.body;
+
+    console.log(good)
+    if(!good.name || !good.category || !good.price || !good.retail) {
+        ctx.render('show_message', {message: "Sorry, you provided wrong info", type: "error"});
+    } else {
+            console.log(good)
+        // let newGood = new Good({
+        //     category: good.category,
+        //     goods: [{            
+        //         name: good.goods[0].name,
+        //         price: good.goods[0].price,
+        //         retailPrice: good.goods[0].retail
+        //     }]
+        // })
+
+        await Good.findOneAndUpdate({_id: good._id},{ 
+            category: good.category,
+            goods: [{            
+                name: good.name,
+                price: good.price,
+                retailPrice: good.retail
+            }]
+        } ,{}, (err, res) => {
+   
+                console.log(res, "GOOD")
+                ctx.response.body = res;
+            
+        })
+    }
+})
+.delete('/person/', async function(ctx) {
+    await Good.findById(ctx.request.body.id).remove((err, ok) => {
+        if(err) {
+            console.log(err)
+        } else {
+            // console.log(ctx.request.body.id)
+            ctx.response.body = "ok";
+        }
+    })
+
 })
 
 
@@ -77,6 +111,8 @@ router.get('/data',   async function(ctx) {
 
 
 })
+
+// Good.remove({}, function(err) {console.log(err)})
 
 
 app.use(router.routes());

@@ -9,42 +9,41 @@ import {Modale} from './Modal'
 
 
 
-
-
-const MWcontentForm = (props) => {
-
+export const MWcontentForm = (props) => {
   let actionValue = (e) => {
       let self = this;
       e.preventDefault();
-    // console.log(props, e.target.value, "ACTION")
       let category = e.target.querySelector('[name="category"]').value;
       let name = e.target.querySelector('[name="name"]').value;
       let price = e.target.querySelector('[name="price"]').value;
       let retail = e.target.querySelector('[name="retail"]').value;
-      // console.log(category, name, price, retail, "ACTION")
-    
-      props.action({
+
+      let data = {
           name: name,
           category: category,
           price: price,
           retail: retail
-      })
-      // fetch('/person', {
-      //   method: 'POST',
-      //   data: {
-      //     name: name,
-      //     category: category,
-      //     price: price,
-      //     retail: retail
-      //   }
-      // })
+      }
 
-      // props.action({
-      //   select: 
-      // })
-    // dispatch(props.action.category.addGood({"SANSE": 1, "d": 2}))
+      if(props.valuesInput !== false) {
+        data = {...data, _id: props.valuesInput[0]._id }
+      }
+
+      
+      props.anoter(data)
+      // setTimeout(() => props.close(), 200)
   }
 
+  
+  let {name, price, retailPrice} = "";
+  let po;
+  if(props.valuesInput !== false) {
+    po = props.valuesInput[0].goods[0];
+    name = po.name;
+    price = po.price;
+    retailPrice = po.retailPrice;
+  }
+  // console.log(name, price, retailPrice)
   return (
     <div>
       <form onSubmit={actionValue} >
@@ -57,15 +56,15 @@ const MWcontentForm = (props) => {
               </FormControl>   
             </FormGroup>
             <FormGroup> 
-              <FormControl type="text" name="name"  placeholder="Enter text" />
+              <FormControl type="text" name="name"  defaultValue={name} placeholder="Enter text" />
             </FormGroup>
             <FormGroup> 
-              <FormControl type="text" name="price"  placeholder="Enter text" />
+              <FormControl type="text" name="price"  defaultValue={price} placeholder="Enter text" />
             </FormGroup>
             <FormGroup> 
-              <FormControl type="text" name="retail"  placeholder="Enter text" />
+              <FormControl type="text" name="retail"  defaultValue={retailPrice} placeholder="Enter text" />
             </FormGroup>
-            <button type="submit">Send</button>
+            <button type="submit">Сохранить</button>
       </form>
     </div>
   )
@@ -88,20 +87,30 @@ export class Layout extends React.Component {
     super()
     this.state = {
       showModal: false,
-      formType: false
+      formType: false,
+      modalValue: null
     }
   }
 
   close() {
-    this.setState({ showModal: false, formType: false  });
+    this.setState({ showModal: false, formType: false, modalValue: null });
   }
 
   open() {
     this.setState({ showModal: true });
   }
 
-  addGoods() {
-    this.setState({ showModal: true, formType: true })
+  addGoods(e) {
+    // console.log()
+    
+    this.setState({ showModal: true, formType: this.props.category.createPost })
+  }
+
+  changeGoods(e, id) {
+    // console.log(e, id)
+    let currentItem = this.props.category.goodies.good.filter(item => item._id === id);
+    // console.log(currentItem)
+    this.setState({ showModal: true, formType: this.props.category.changeGood, modalValue: currentItem })
   }
 
   render() {
@@ -127,15 +136,22 @@ export class Layout extends React.Component {
                         <List />
                     </Col>
                     <Col xs={12} md={9} className="content">
-                        <GoodsTable goods={this.props.category.goodies.good} all={this.props.category.goodies}/>
+                        <GoodsTable 
+                        goods={this.props.category.goodies.good}
+                        events={this.props.category} 
+                        all={this.props.category.goodies} 
+                        changeGoodsHandle={this.changeGoods.bind(this)}/>
                     </Col>
                 </Row>
               </div>
             </Grid>
             <Modale close={this.close.bind(this)} showModal={this.state.showModal}>
-              {this.state.formType ? <MWcontentForm action={this.props.category.addGood} /> : <MWcontentText /> }
+               <MWcontentForm 
+                 anoter={this.state.formType} 
+                 close={this.close.bind(this)}
+                 valuesInput={this.state.modalValue !== null ? this.state.modalValue : false  }/>
             </Modale> 
         </div>
     
-}
+  }
 }
