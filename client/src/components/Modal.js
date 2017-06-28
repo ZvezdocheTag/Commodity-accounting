@@ -1,6 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Modal, Button } from 'react-bootstrap'
+import { Modal } from 'react-bootstrap'
 
 
 export const Modale = (props) => {
@@ -15,6 +14,3 @@ export const Modale = (props) => {
         </Modal>
   )
 }
-          // <Modal.Footer>
-          //   <Button onClick={props.close}>Close</Button>
-          // </Modal.Footer>

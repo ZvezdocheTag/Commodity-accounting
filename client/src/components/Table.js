@@ -1,13 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {Table, ButtonToolbar, Button} from 'react-bootstrap'
-import {Modale} from './Modal'
-import {MWcontentForm} from './index'
 
 const Buttonset = (props) => {
   let id = props.id;
 
   const handle = () => {
-    // console.log(props.events)
     props.events.deleteGood(id)
   }
 
@@ -22,7 +19,6 @@ const Buttonset = (props) => {
 
 
 export const GoodsTable = (props) => {
-  // console.log(props.events)
   let goods = props.goods;
   if(typeof goods === "undefined") {
     return (<div>Sorry no data here</div>)
@@ -30,12 +26,7 @@ export const GoodsTable = (props) => {
   if(props.all.newGood.length) {
     goods= goods.concat(props.all.newGood)
   }
-  // goods = goods.filter((item, i) )
-  // if(props.all.deletedPost.post !== null) {
-  //   goods = goods.filter(item => item._id !== props.all.deletedPost.post )
-  // }
 
-  // console.log(goods)
   return (
   <Table striped bordered condensed hover>
     <thead>
@@ -57,7 +48,7 @@ export const GoodsTable = (props) => {
             <td title={item._id} data-id={item._id}>{`${item._id.slice(-2)}`}</td>
             <td>{isa.name}</td>
             <td>{isa.price}</td>
-            <td>{isa.retailPrice}</td>
+            <td>{isa.retail}</td>
             <td>
                 <Buttonset id={item._id} events={props.events} changeGood={props.changeGoodsHandle}/>
             </td>

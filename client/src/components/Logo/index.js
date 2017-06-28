@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import food from './food.svg';
 
 export const Logo = (props) => {

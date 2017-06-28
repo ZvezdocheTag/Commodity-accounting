@@ -83,7 +83,8 @@ export function createPost(data) {
             {
                 name: data.name,
                 price: data.price,
-                retail: data.retail
+                retail: data.retail,
+                id: data.id
             }
           ]
         }
@@ -147,15 +148,13 @@ export const CHANGE_GOOD = 'CHANGE_GOOD';
 export const CHANGE_GOOD_SUCCESS = 'CHANGE_GOOD_SUCCESS';
 export const CHANGE_GOOD_FAILURE = 'CHANGE_GOOD_FAILURE';
 
-export const changeGood = (data) => 
-{
-        const request = axios({
-        method: 'put',
-        url: '/person',
+export const changeGood = (data) => {
+    const request = axios('/person', {
+        method: 'PUT',
         data: {...data}
-      })
+    })
 
-      return {
+    return {
         type: "CHANGE_GOOD",
         payload: request
     }

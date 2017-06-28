@@ -2,9 +2,8 @@ import { combineReducers } from 'redux'
 import update from 'immutability-helper'
 
 
-import {GET_GOODS,
+import {
 ADD_GOOD,
-FILTER_GOODS,
 REQUEST_DATA,
 FETCH_POST, CREATE_POST, CREATE_POST_SUCCESS, CREATE_POST_FAILURE, RESET_NEW_POST,
 DELETE_GOOD, DELETE_GOOD_SUCCESS, DELETE_GOOD_FAILURE,
@@ -52,8 +51,17 @@ const goodies = (state = INITIAL, action) => {
     case CHANGE_GOOD:
       return {...state, changePost: {...state.changePost, loading: true}}
     case CHANGE_GOOD_SUCCESS:
-      console.log(action.payload)
-      return {...state, changePost: {...state.changePost,post: action.payload, loading: false}}
+      
+      // let some = state.good;
+      let filterCategory = state.good.map(item => {
+        console.log(item, action.payload)
+        if(item._id === action.payload._id) {
+          item.goods[0] = action.payload
+        } 
+        return item;
+      })
+      console.log(filterCategory, "REDUCER")
+      return update(state, {good: {$set: state.good}})
     case CHANGE_GOOD_FAILURE:
       return state;
     default:
