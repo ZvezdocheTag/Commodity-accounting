@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import {Layout} from './components'
 import './App.css';
-import {fetchPost, requestData, addGood, createPost,
-        createPostSuccess, createPostFailure, 
+import {fetchPost, requestData, addGood, filterGoods,
+        createPost, createPostSuccess, createPostFailure, 
+        createCategory, createCategorySuccess, createCategoryFailure, 
         deleteGood , deleteGoodSuccess, deleteGoodFailure, 
+        deleteCategory , deleteCategorySuccess, deleteCategoryFailure, 
         changeGood, changeGoodSuccess, changeGoodFailure
 } from './actions'
 import { connect} from 'react-redux'
@@ -24,14 +26,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    fetchPost : () => {   
-      dispatch(fetchPost()).then(response => {return response.json()},
-                error => console.log("Error occure", error))
-                .then(json => dispatch(requestData(json)))
-    },
-    addGood: (data) => {
-      dispatch(addGood(data))
-    },
     createPost: (data) => {
       dispatch(createPost(data)).payload.then(res => {
         if(res.status !== 200) {
@@ -39,6 +33,17 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           throw res;
         } else {
           dispatch(createPostSuccess(res.data));
+        }  
+      })
+    },
+    createCategory: (data) => {
+      dispatch(createCategory(data)).payload.then(res => {
+        if(res.status !== 200) {
+          dispatch(createCategoryFailure(res.data));
+          throw res;
+        } else {
+          console.log(res, "CREATE RES")
+          dispatch(createCategorySuccess(res.data));
         }  
       })
     },
@@ -51,6 +56,19 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           dispatch(deleteGoodSuccess(id));
         }  
       })
+    },
+    deleteCategory: (id) => {
+      dispatch(deleteCategory(id)).payload.then(res => {
+        if(res.status !== 200) {
+          dispatch(deleteCategoryFailure(res));
+          throw res.data;
+        } else {
+          dispatch(deleteCategorySuccess(id));
+        }  
+      })
+    },
+    filterGoods: (category) => {
+      dispatch(filterGoods(category))
     },
     changeGood: (data) => {
       dispatch(changeGood(data)).payload.then((res) => {

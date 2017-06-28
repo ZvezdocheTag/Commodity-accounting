@@ -26,7 +26,14 @@ const schemaGood = new Schema({
     }]
 })
 
+const schemaCategory = new Schema({
+        categoryName: String,
+})
+
 const Good = mongoose.model('Good', schemaGood)
+const Category = mongoose.model('Category', schemaCategory)
+
+
 
 
 router.get('/sew', (ctx) => {
@@ -91,15 +98,63 @@ router.get('/sew', (ctx) => {
 
 })
 .get('/data',   async function(ctx) {
-   let database = [];
-   
+
     await Good.find({}, function(err, teams) {
         if (err) {
             console.log(err)
         } else {
+            // console.log(teams, "DATA GOOD")
             ctx.body = teams
         }
     }); 
+ 
+})
+
+router.get('/category', async function(ctx) {
+     const category = ctx.request.body;
+
+    await Category.find({}, function(err, category) {
+        if (err) {
+            console.log(err)
+        } else {
+            // console.log(category, "DATA CATEGORY")
+            ctx.body = category
+        }
+    }); 
+})
+.post('/category', async function(ctx) {
+    const category = ctx.request.body;
+
+    // console.log(category)
+    if(!category.categoryName) {
+        // TODO error handl
+        ctx.render('show_message', {message: "Sorry, you provided wrong info", type: "error"});
+    } else {
+        let newCategory = new Category({
+            categoryName: category.categoryName
+        })
+
+        await newCategory.save((err, res) => {
+            if(err) {
+                // TODO error handl
+                 ctx.render('show_message', {message: "Database error", type: "error"});
+            } else {
+                
+                ctx.response.body = res;
+            }
+        })
+    }
+})
+.delete('/category', async function(ctx) {
+    console.log(ctx.request.body.id)
+    await Category.findById(ctx.request.body.id).remove((err, ok) => {
+        if(err) {
+            console.log(err)
+        } else {
+            ctx.response.body = "ok";
+        }
+    })
+
 })
 
 app.use(router.routes());

@@ -1,67 +1,54 @@
 import fetch from 'isomorphic-fetch'
 import axios from 'axios'
 
-export const GET_GOODS = "GET_GOODS"
-export const ADD_GOOD = "ADD_GOOD"
-export const FILTER_GOODS = "FILTER_GOODS"
 export const REQUEST_DATA = "REQUEST_DATA"
-export const FETCH_POST = "FETCH_POST"
+export const REQUEST_CATEGORY = "REQUEST_CATEGORY"
+export const FILTER_GOODS = "FILTER_GOODS"
 
+// export const requestData = (data) => ({
+//     type: REQUEST_DATA,
+//     data
+// })
 
 export const requestData = (data) => ({
     type: REQUEST_DATA,
     data
 })
 
+export const requestCategory = (data) => ({
+    type: REQUEST_CATEGORY,
+    data
+})
 
 export function fetchData() {
     return function(dispatch) {
         return fetch('/data')
-                .then(response => { console.log(response); return response.json()},
+                .then(response => { console.log(response, "SOME"); return response.json()},
                 error => console.log("Error occure", error))
-                .then(json =>
-                dispatch(requestData(json)))
+                .then(json =>  {
+                    console.log(json, "FETCH ")
+                    return dispatch(requestData(json))
+                })
+
     }
 }
 
-export function fetchPost() {
-    const request = fetch('/data');
-    // console.log(request)
-    return {
-        type: FETCH_POST,
-        load: request
+export function fetchCategory() {
+    return function(dispatch) {
+        return fetch('/category')
+                .then(response => { console.log(response); return response.json()},
+                error => console.log("Error occure", error))
+                .then(json =>
+                dispatch(requestCategory(json)))
     }
 }
+
 
 export const getGoods = (data) => ({
     type: "GET_GOODS",
     data
 })
 
-export const addGood = (data) => {
-    const res = axios({
-        method: 'post',
-        url: '/person',
-        data: {
-          category: data.category,
-          goods: [
-            {
-                name: data.name,
-                price: data.price,
-                retail: data.retail
-            }
-          ]
-        }
-      })
-      
-      return {
-            type: "ADD_GOOD",
-            res
-        }
-}
-
-
-// .then((res) => console.log(res, "GOOD"))
 // Create post
 export const CREATE_POST = 'CREATE_POST';
 export const CREATE_POST_SUCCESS = 'CREATE_POST_SUCCESS';
@@ -177,3 +164,67 @@ export const filterGoods = (category) => ({
     category
 })
 
+
+export const CREATE_CATEGORY = 'CREATE_CATEGORY';
+export const CREATE_CATEGORY_SUCCESS = 'CREATE_CATEGORY_SUCCESS';
+export const CREATE_CATEGORY_FAILURE = 'CREATE_CATEGORY_FAILURE';
+
+export function createCategory(data) {
+    const request = axios({
+        method: 'post',
+        url: '/category',
+        data: {
+          categoryName: data.categoryName,
+        }
+      })
+
+      return {
+          type: CREATE_CATEGORY,
+          payload: request
+      }
+}
+
+export function createCategorySuccess(newPost) {
+    return {
+        type: CREATE_CATEGORY_SUCCESS,
+        newPost
+    }
+}
+
+export function createCategoryFailure(err) {
+    return {
+        type: CREATE_CATEGORY_FAILURE,
+        err
+    }
+}
+
+export const DELETE_CATEGORY = 'DELETE_CATEGORY';
+export const DELETE_CATEGORY_SUCCESS = 'DELETE_CATEGORY_SUCCESS';
+export const DELETE_CATEGORY_FAILURE = 'DELETE_CATEGORY_FAILURE';
+
+export const deleteCategory = (id) => 
+{
+        const request = axios({
+        method: 'delete',
+        url: '/category',
+        data: {id: id}
+      })
+
+      return {
+        type: "DELETE_CATEGORY",
+        payload: request
+    }
+}
+export function deleteCategorySuccess(deletedCategory) {
+  return {
+    type: DELETE_CATEGORY_SUCCESS,
+    payload: deletedCategory
+  };
+}
+
+export function deleteCategoryFailure(response) {
+  return {
+    type: DELETE_CATEGORY_FAILURE,
+    payload: response
+  };
+}
