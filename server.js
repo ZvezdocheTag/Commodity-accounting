@@ -15,7 +15,7 @@ var pug = new Pug({
 
 app.use(bodyParser());
 
-mongoose.connect('mongodb://localhost/db');
+mongoose.connect('mongodb://test:123456@ds143542.mlab.com:43542/test-commodity');
 const Schema = mongoose.Schema;
 const schemaGood = new Schema({
         category: String,

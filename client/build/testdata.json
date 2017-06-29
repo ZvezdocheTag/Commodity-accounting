@@ -1,0 +1,11 @@
+{
+    "category": [{
+        "name": "fruit",
+        "goods": [{
+            "id": 1,
+            "name": "banana",
+            "price": 100,
+            "retail": 120
+        }]
+    }]
+}
