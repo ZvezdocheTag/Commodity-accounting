@@ -42,14 +42,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           dispatch(createCategoryFailure(res.data));
           throw res;
         } else {
-          console.log(res, "CREATE RES")
           dispatch(createCategorySuccess(res.data));
         }  
       })
     },
     deleteGood: (id) => {
       dispatch(deleteGood(id)).payload.then(res => {
-        console.log(res, "DELTE")
         if(res.status !== 200) {
           dispatch(deleteGoodFailure(res));
           throw res.data;

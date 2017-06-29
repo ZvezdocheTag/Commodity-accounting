@@ -1,119 +1,10 @@
 import React from 'react';
-
-import {Grid, Row, Col, ButtonToolbar, Button,FormGroup, FormControl } from 'react-bootstrap'
+import {Grid, Row, Col, ButtonToolbar, Button } from 'react-bootstrap'
 import {Logo} from './Logo/'
 import {GoodsTable} from './Table'
 import {List} from './Category'
-import {Modale} from './Modal'
+import {MWcontentForm, MWcontentText, MWcontentFormShort, Modale } from './Modals'
 
-
-
-
-export const MWcontentForm = (props) => {
-  let actionValue = (e) => {
-      e.preventDefault();
-      let category = e.target.querySelector('[name="category"]').value;
-      let name = e.target.querySelector('[name="name"]').value;
-      let price = e.target.querySelector('[name="price"]').value;
-      let retail = e.target.querySelector('[name="retail"]').value;
-
-      let generateId = (Math.random() * (1000 - 1) + 1) * (Math.random() * (10 - 1) + 1)
-      let data = {
-          name: name,
-          category: category,
-          price: price,
-          retail: retail,
-          id: Math.round(generateId)
-      }
-
-      if(props.valuesInput !== false) {
-        data = {...data, _id: props.valuesInput[0]._id }
-      }
-
-      props.anoter(data)
-  }
-
-  
-  let {name, price, retail} = "";
-  let po;
-  if(props.valuesInput !== false) {
-    po = props.valuesInput[0].goods[0];
-    name = po.name;
-    price = po.price;
-    retail = po.retail;
-  }
-
-  return (
-
-    <div>
-      <form onSubmit={actionValue} >
-            <FormGroup> 
-              <FormControl componentClass="select" name="category"  placeholder="select" defaultValue="Без категории">
-                {/*<option value="Без категории" >{item.categoryName}</option>*/}
-                {props.categories.map((item, i) => 
-                  <option value={item.categoryName} key={i}>{item.categoryName}</option>)
-                }
-              </FormControl>   
-            </FormGroup>
-            <FormGroup> 
-              <FormControl type="text" name="name"  defaultValue={name} placeholder="Enter text" />
-            </FormGroup>
-            <FormGroup> 
-              <FormControl type="text" name="price"  defaultValue={price} placeholder="Enter text" />
-            </FormGroup>
-            <FormGroup> 
-              <FormControl type="text" name="retail"  defaultValue={retail} placeholder="Enter text" />
-            </FormGroup>
-            <button type="submit">Сохранить</button>
-      </form>
-    </div>
-  )
-}
-
-export const MWcontentFormShort = (props) => {
-  let actionValue = (e) => {
-    e.preventDefault();
-    let name = e.target.querySelector('[name="name"]').value;
-
-    let data = {
-      categoryName: name
-    }
-
-    props.anoter(data)
-  }
-  return (
-    <div>
-      <form onSubmit={actionValue} >
-            <FormGroup> 
-              <FormControl type="text" name="name" placeholder="Enter text" />
-            </FormGroup>
-            <button type="submit">Сохранить</button>
-      </form>
-    </div>
-  )
-}
-
-const MWcontentText = (props) => {
-  console.log(props)
-
-  let text = props.type === "DELETE_GOOD" 
-    ? `Точно удалить товар id${props.id}`
-    : `Все товары в этой категории будут помечены "Без категории"`
-
-  let handle = (e) => {
-    props.anoter(props.id)
-  }
-
-  return (
-    <div>
-        <p>{text}</p>  
-        <ButtonToolbar>
-          <Button href="#" onClick={handle}>Да</Button>
-          <Button href="#" onClick={props.close}>Нет</Button>
-        </ButtonToolbar>
-    </div>
-  )
-}
 
 const SwitcherModalContent = (props) => {
   switch(props.type) {
@@ -171,13 +62,10 @@ export class Layout extends React.Component {
   }
 
   deleteGood(e, id) {
-    // let currentItem = this.props.category.goodies.good.filter(item => item._id === id);
-    // , modalValue: currentItem 
     this.setState({ showModal: true, formType: this.props.category.deleteGood, eventType: "DELETE_GOOD"})
   }
 
   addCategory(e) {
-    console.log(this.props.category)
     this.setState({ showModal: true, formType: this.props.category.createCategory, eventType: "ADD_CATEGORY"  })
   }
 
@@ -188,8 +76,6 @@ export class Layout extends React.Component {
 
   render() {
     let category = this.props.category.goodies.categoryNew;
-    console.log(this, "INN COMPONENT")
-    console.log(category, "INN category")
 
     return <div >
             <Grid>

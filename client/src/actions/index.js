@@ -1,14 +1,16 @@
 import fetch from 'isomorphic-fetch'
 import axios from 'axios'
-
-export const REQUEST_DATA = "REQUEST_DATA"
-export const REQUEST_CATEGORY = "REQUEST_CATEGORY"
-export const FILTER_GOODS = "FILTER_GOODS"
-
-// export const requestData = (data) => ({
-//     type: REQUEST_DATA,
-//     data
-// })
+import {
+REQUEST_CATEGORY,
+REQUEST_DATA,
+CREATE_POST, CREATE_POST_SUCCESS, CREATE_POST_FAILURE,
+CREATE_CATEGORY, CREATE_CATEGORY_SUCCESS, CREATE_CATEGORY_FAILURE,
+RESET_NEW_POST,
+DELETE_GOOD_SUCCESS, DELETE_GOOD_FAILURE,
+ DELETE_CATEGORY_SUCCESS, DELETE_CATEGORY_FAILURE,
+CHANGE_GOOD_SUCCESS,
+CHANGE_GOOD_FAILURE,
+} from '../constant'
 
 export const requestData = (data) => ({
     type: REQUEST_DATA,
@@ -22,51 +24,37 @@ export const requestCategory = (data) => ({
 
 export function fetchData() {
     return function(dispatch) {
-        return fetch('/data')
-                .then(response => { console.log(response, "SOME"); return response.json()},
-                error => console.log("Error occure", error))
-                .then(json =>  {
-                    console.log(json, "FETCH ")
-                    return dispatch(requestData(json))
-                })
-
+        return fetch('/data', {
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }})
+        .then(response => response.json(),
+        error => console.log("Error occure", error))
+        .then(json => dispatch(requestData(json))
+        )
     }
 }
 
 export function fetchCategory() {
     return function(dispatch) {
         return fetch('/category', {
-                headers : { 
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-
-                })
-                .then(response => { console.log(response); return response.json()},
-                error => console.log("Error occure", error))
-                .then(json =>
-                dispatch(requestCategory(json)))
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }})
+        .then(response =>  response.json(),
+        error => console.log("Error occure", error))
+        .then(json => dispatch(requestCategory(json)))
     }
 }
-
 
 export const getGoods = (data) => ({
     type: "GET_GOODS",
     data
 })
 
-// Create post
-export const CREATE_POST = 'CREATE_POST';
-export const CREATE_POST_SUCCESS = 'CREATE_POST_SUCCESS';
-export const CREATE_POST_FAILURE = 'CREATE_POST_FAILURE';
-export const RESET_NEW_POST = 'RESET_NEW_POST';
-
-export const DELETE_GOOD = 'DELETE_GOOD';
-export const DELETE_GOOD_SUCCESS = 'DELETE_GOOD_SUCCESS';
-export const DELETE_GOOD_FAILURE = 'DELETE_GOOD_FAILURE';
-export const RESET_DELETED_GOOD = 'RESET_DELETED_GOOD';
-
-export function createPost(data) {
+export const  createPost = (data) => {
     const request = axios({
         method: 'post',
         url: '/person',
@@ -89,57 +77,52 @@ export function createPost(data) {
       }
 }
 
-export function createPostSuccess(newPost) {
+export const  createPostSuccess = (newPost) => {
     return {
         type: CREATE_POST_SUCCESS,
         newPost
     }
 }
 
-export function createPostFailure(err) {
+export const  createPostFailure = (err) => {
     return {
         type: CREATE_POST_FAILURE,
         err
     }
 }
 
-export function resetNewPost() {
+export const  resetNewPost = () => {
     return {
         type: RESET_NEW_POST
     }
 }
-// END 
 
-export const deleteGood = (id) => 
-{
-        const request = axios({
+export const deleteGood = (id) => {
+    const request = axios({
         method: 'delete',
         url: '/person',
         data: {id: id}
-      })
+    })
 
-      return {
+    return {
         type: "DELETE_GOOD",
         payload: request
     }
 }
-export function deleteGoodSuccess(deletedGood) {
+
+export const deleteGoodSuccess = (deletedGood) => {
   return {
     type: DELETE_GOOD_SUCCESS,
     payload: deletedGood
   };
 }
 
-export function deleteGoodFailure(response) {
+export const deleteGoodFailure = (response) => {
   return {
     type: DELETE_GOOD_FAILURE,
     payload: response
   };
 }
-
-export const CHANGE_GOOD = 'CHANGE_GOOD';
-export const CHANGE_GOOD_SUCCESS = 'CHANGE_GOOD_SUCCESS';
-export const CHANGE_GOOD_FAILURE = 'CHANGE_GOOD_FAILURE';
 
 export const changeGood = (data) => {
     const request = axios('/person', {
@@ -152,30 +135,27 @@ export const changeGood = (data) => {
         payload: request
     }
 }
-export function changeGoodSuccess(changedGood) {
+
+export const changeGoodSuccess = (changedGood) => {
   return {
     type: CHANGE_GOOD_SUCCESS,
     payload: changedGood
   };
 }
 
-export function changeGoodFailure(response) {
+export const changeGoodFailure = (response) => {
   return {
     type: CHANGE_GOOD_FAILURE,
     payload: response
   };
 }
+
 export const filterGoods = (category) => ({
     type: "FILTER_GOODS",
     category
 })
 
-
-export const CREATE_CATEGORY = 'CREATE_CATEGORY';
-export const CREATE_CATEGORY_SUCCESS = 'CREATE_CATEGORY_SUCCESS';
-export const CREATE_CATEGORY_FAILURE = 'CREATE_CATEGORY_FAILURE';
-
-export function createCategory(data) {
+export const createCategory = (data) => {
     const request = axios({
         method: 'post',
         url: '/category',
@@ -190,47 +170,43 @@ export function createCategory(data) {
       }
 }
 
-export function createCategorySuccess(newPost) {
+export const createCategorySuccess = (newPost) => {
     return {
         type: CREATE_CATEGORY_SUCCESS,
         newPost
     }
 }
 
-export function createCategoryFailure(err) {
+export const createCategoryFailure = (err) => {
     return {
         type: CREATE_CATEGORY_FAILURE,
         err
     }
 }
 
-export const DELETE_CATEGORY = 'DELETE_CATEGORY';
-export const DELETE_CATEGORY_SUCCESS = 'DELETE_CATEGORY_SUCCESS';
-export const DELETE_CATEGORY_FAILURE = 'DELETE_CATEGORY_FAILURE';
-
-export const deleteCategory = (id) => 
-{
-        const request = axios({
+export const deleteCategory = (id) => {
+    const request = axios({
         method: 'delete',
         url: '/category',
         data: {id: id}
-      })
+        })
 
-      return {
+    return {
         type: "DELETE_CATEGORY",
         payload: request
     }
 }
-export function deleteCategorySuccess(deletedCategory) {
-  return {
-    type: DELETE_CATEGORY_SUCCESS,
-    payload: deletedCategory
-  };
+
+export const deleteCategorySuccess = (deletedCategory) => {
+    return {
+        type: DELETE_CATEGORY_SUCCESS,
+        payload: deletedCategory
+    };
 }
 
-export function deleteCategoryFailure(response) {
-  return {
-    type: DELETE_CATEGORY_FAILURE,
-    payload: response
-  };
+export const deleteCategoryFailure = (response) => {
+    return {
+        type: DELETE_CATEGORY_FAILURE,
+        payload: response
+    };
 }

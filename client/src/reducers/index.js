@@ -1,25 +1,18 @@
 import { combineReducers } from 'redux'
 import update from 'immutability-helper'
-
-
 import {GET_GOODS,
-FILTER_GOODS,
-REQUEST_CATEGORY,
-REQUEST_DATA,
-CREATE_POST, CREATE_POST_SUCCESS, CREATE_POST_FAILURE,
-CREATE_CATEGORY, CREATE_CATEGORY_SUCCESS, CREATE_CATEGORY_FAILURE,
-RESET_NEW_POST,
-DELETE_GOOD, DELETE_GOOD_SUCCESS, DELETE_GOOD_FAILURE,
-DELETE_CATEGORY, DELETE_CATEGORY_SUCCESS, DELETE_CATEGORY_FAILURE,
-CHANGE_GOOD,
-CHANGE_GOOD_SUCCESS,
-CHANGE_GOOD_FAILURE,
-} from '../actions'
+  FILTER_GOODS,
+  REQUEST_CATEGORY,REQUEST_DATA,
+  CREATE_POST, CREATE_POST_SUCCESS, CREATE_POST_FAILURE,
+  CREATE_CATEGORY, CREATE_CATEGORY_SUCCESS, CREATE_CATEGORY_FAILURE,
+  RESET_NEW_POST,
+  DELETE_GOOD, DELETE_GOOD_SUCCESS, DELETE_GOOD_FAILURE,
+  DELETE_CATEGORY, DELETE_CATEGORY_SUCCESS, DELETE_CATEGORY_FAILURE,
+  CHANGE_GOOD, CHANGE_GOOD_SUCCESS, CHANGE_GOOD_FAILURE,
+} from '../constant'
 
 const hash = window.location.hash;
 const filterURL = hash.length > 1 ? hash.slice(1, hash.length) : "all"
-
- console.log(window.location.hash, window.location, "IN THE")
 const INITIAL = {newGood: [], posts: [],
     filter: {
       type: filterURL,
@@ -49,7 +42,6 @@ const goodies = (state = INITIAL, action) => {
       return {...state, newPost: {post: null, error: error, loading: false}}
 
     case FILTER_GOODS:
-      console.log(action, state.filter)
       return update(state, {
         filter : {
           type: {$set: action.category}
@@ -73,7 +65,7 @@ const goodies = (state = INITIAL, action) => {
       let filter = state.good.filter(item => item._id !== action.payload);
       return update(state, {good: {$set: filter}})
     case DELETE_GOOD_FAILURE:
-      error = action.payload || {message: action.payload.message};//2nd one is network or server down errors
+      error = action.payload || {message: action.payload.message};
       return {...state, deletedPost: {post:null, error:error, loading: false}}   
       
     case DELETE_CATEGORY:
@@ -83,7 +75,7 @@ const goodies = (state = INITIAL, action) => {
       let filterCategoryA = state.categoryNew.filter(item => item._id !== action.payload);
       return update(state, {categoryNew: {$set: filterCategoryA}})
     case DELETE_CATEGORY_FAILURE:
-      error = action.payload || {message: action.payload.message};//2nd one is network or server down errors
+      error = action.payload || {message: action.payload.message};
       return {...state, deletedCategory: {post:null, error:error, loading: false}}   
 
     case CHANGE_GOOD:
@@ -102,7 +94,6 @@ const goodies = (state = INITIAL, action) => {
       return state
   }
 }
-
 
 export const rootReducer = combineReducers({
   goodies
