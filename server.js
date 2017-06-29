@@ -16,7 +16,7 @@ var pug = new Pug({
 if (process.env.NODE_ENV === 'production') {
   app.use(serve('client/build'));
 }
-
+app.use(serve('client/build'));
 app.use(bodyParser());
 
 mongoose.connect('mongodb://test:123456@ds143542.mlab.com:43542/test-commodity');
