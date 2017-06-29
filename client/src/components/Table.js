@@ -5,14 +5,14 @@ const Buttonset = (props) => {
   let id = props.id;
 
   const deleted = () => {
-    props.events.deleteGood(id)
+    // props.events.deleteGood(id)
   }
 
   const changer = (e) => {
-    props.changeGood(e, id)
+    // props.changeGood(e, id)
   }
   return (<ButtonToolbar>
-      <Button bsStyle="primary" bsSize="small" onClick={deleted}>Удалить</Button>
+      <Button bsStyle="primary" bsSize="small" onClick={props.deleteGood}>Удалить</Button>
       <Button bsSize="small" onClick={changer}>Изменить</Button>
     </ButtonToolbar>)
 }
@@ -21,7 +21,7 @@ const Buttonset = (props) => {
 export const GoodsTable = (props) => {
   let goods = props.goods;
   if(typeof goods === "undefined") {
-    return (<div>Sorry no data here</div>)
+    return (<div>Sorry no data here <Buttonset events={props.events} deleteGood={props.deletGoodHandle} changeGood={props.changeGoodsHandle}/></div>)
   }
 
   let filterType = props.all.filter.type;

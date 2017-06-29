@@ -93,13 +93,23 @@ export const MWcontentFormShort = (props) => {
   )
 }
 
-const MWcontentText = () => {
+const MWcontentText = (props) => {
+  console.log(props)
+
+  let text = props.type === "DELETE_GOOD" 
+    ? `Точно удалить товар id${props.id}`
+    : `Все товары в этой категории будут помечены "Без категории"`
+
+  let handle = (e) => {
+    props.anoter(props.id)
+  }
+
   return (
     <div>
-        <p>Some text</p>  
+        <p>{text}</p>  
         <ButtonToolbar>
-          <Button href="#">Да</Button>
-          <Button href="#">Нет</Button>
+          <Button href="#" onClick={handle}>Да</Button>
+          <Button href="#" onClick={props.close}>Нет</Button>
         </ButtonToolbar>
     </div>
   )
@@ -111,6 +121,14 @@ const SwitcherModalContent = (props) => {
         return (<MWcontentForm 
                  anoter={props.anoter} 
                  close={props.close}
+                 categories={props.categories}
+                 valuesInput={props.valuesInput !== null ? props.valuesInput : false}/>)
+    case "DELETE_GOOD":
+        return (<MWcontentText 
+                 anoter={props.anoter} 
+                 close={props.close}
+                 type={props.type}
+                 id={1}
                  categories={props.categories}
                  valuesInput={props.valuesInput !== null ? props.valuesInput : false}/>)
     case "ADD_CATEGORY":
@@ -152,6 +170,12 @@ export class Layout extends React.Component {
     this.setState({ showModal: true, formType: this.props.category.createPost, eventType: "ADD_GOOD" })
   }
 
+  deleteGood(e, id) {
+    // let currentItem = this.props.category.goodies.good.filter(item => item._id === id);
+    // , modalValue: currentItem 
+    this.setState({ showModal: true, formType: this.props.category.deleteGood, eventType: "DELETE_GOOD"})
+  }
+
   addCategory(e) {
     console.log(this.props.category)
     this.setState({ showModal: true, formType: this.props.category.createCategory, eventType: "ADD_CATEGORY"  })
@@ -189,6 +213,7 @@ export class Layout extends React.Component {
                     </Col>
                     <Col xs={12} md={9} className="content">
                         <GoodsTable 
+                        deletGoodHandle={this.deleteGood.bind(this)}
                         goods={this.props.category.goodies.good}
                         events={this.props.category} 
                         all={this.props.category.goodies} 
