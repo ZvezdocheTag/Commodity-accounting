@@ -49,6 +49,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     deleteGood: (id) => {
       dispatch(deleteGood(id)).payload.then(res => {
+        console.log(res, "DELTE")
         if(res.status !== 200) {
           dispatch(deleteGoodFailure(res));
           throw res.data;
@@ -65,6 +66,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         } else {
           dispatch(deleteCategorySuccess(id));
         }  
+      }).catch(err => {
+        console.log(err, "delete")
       })
     },
     filterGoods: (category) => {

@@ -25,7 +25,7 @@ export const GoodsTable = (props) => {
   }
 
   let filterType = props.all.filter.type;
-
+ 
   if(filterType !== "all") {
     goods = goods.filter(item => item.category === filterType)
   }

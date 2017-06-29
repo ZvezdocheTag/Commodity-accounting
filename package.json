@@ -2,13 +2,15 @@
   "name": "consumers",
   "version": "1.0.0",
   "description": "test application",
+  "proxy": "http://localhost:3003",
   "main": "index.js",
+
   "engines": {
     "node": "7.2.0"
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "node --harmony server.js",
+    "server": "nodemon --harmony server.js",
     "client": "node start-client.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

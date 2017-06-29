@@ -48,7 +48,8 @@ export const MWcontentForm = (props) => {
     <div>
       <form onSubmit={actionValue} >
             <FormGroup> 
-              <FormControl componentClass="select" name="category"  placeholder="select">
+              <FormControl componentClass="select" name="category"  placeholder="select" defaultValue="Без категории">
+                {/*<option value="Без категории" >{item.categoryName}</option>*/}
                 {props.categories.map((item, i) => 
                   <option value={item.categoryName} key={i}>{item.categoryName}</option>)
                 }
@@ -84,7 +85,7 @@ export const MWcontentFormShort = (props) => {
     <div>
       <form onSubmit={actionValue} >
             <FormGroup> 
-              <FormControl type="text" name="name" laceholder="Enter text" />
+              <FormControl type="text" name="name" placeholder="Enter text" />
             </FormGroup>
             <button type="submit">Сохранить</button>
       </form>

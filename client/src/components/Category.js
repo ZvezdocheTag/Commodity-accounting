@@ -13,7 +13,7 @@ const Item = (props) => {
 
     return (<li className="category-list__item category-item">
     <a className="category-item__delete" href="#" onClick={handleDelete}>x</a>
-    <a className="category-item__link" href="#" onClick={handleFilter}>{props.title}</a>
+    <a className="category-item__link" href={`#${props.title}`} onClick={handleFilter}>{props.title}</a>
 </li>)
 }
 

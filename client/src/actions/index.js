@@ -35,7 +35,13 @@ export function fetchData() {
 
 export function fetchCategory() {
     return function(dispatch) {
-        return fetch('/category')
+        return fetch('/category', {
+                headers : { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+
+                })
                 .then(response => { console.log(response); return response.json()},
                 error => console.log("Error occure", error))
                 .then(json =>

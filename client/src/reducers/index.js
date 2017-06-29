@@ -16,11 +16,16 @@ CHANGE_GOOD_SUCCESS,
 CHANGE_GOOD_FAILURE,
 } from '../actions'
 
+const hash = window.location.hash;
+const filterURL = hash.length > 1 ? hash.slice(1, hash.length) : "all"
+
+ console.log(window.location.hash, window.location, "IN THE")
 const INITIAL = {newGood: [], posts: [],
     filter: {
-      type: "all",
+      type: filterURL,
       goods: []
     },
+    categoryNew: [],
     newPost:{post:null, error: null, loading: false},
     newCategory:{post:null, error: null, loading: false},
     deletedPost: {post: null, error:null, loading: false},

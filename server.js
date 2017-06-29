@@ -13,10 +13,13 @@ var pug = new Pug({
   app: app 
 });
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(serve('client/build'));
-}
-app.use(serve('client/build'));
+
+console.log(process.env.NODE_ENV )
+
+// if (process.env.NODE_ENV === 'production') {
+//   app.use(serve('client/build'));
+// }
+
 app.use(bodyParser());
 
 mongoose.connect('mongodb://test:123456@ds143542.mlab.com:43542/test-commodity');
@@ -36,9 +39,6 @@ const schemaCategory = new Schema({
 
 const Good = mongoose.model('Good', schemaGood)
 const Category = mongoose.model('Category', schemaCategory)
-
-
-
 
 router.get('/sew', (ctx) => {
     ctx.render('few')
@@ -86,17 +86,18 @@ router.get('/sew', (ctx) => {
                 id: good.id
             }]
         } ,{}, (err, res) => {
-                console.log(res)
+                // console.log(res)
                 ctx.response.body = {res};
         })
     }
 })
 .delete('/person/', async function(ctx) {
+
     await Good.findById(ctx.request.body.id).remove((err, ok) => {
         if(err) {
             console.log(err)
         } else {
-            ctx.response.body = "ok";
+            ctx.response.body = ok;
         }
     })
 
@@ -106,8 +107,8 @@ router.get('/sew', (ctx) => {
     await Good.find({}, function(err, teams) {
         if (err) {
             console.log(err)
+
         } else {
-            // console.log(teams, "DATA GOOD")
             ctx.body = teams
         }
     }); 
@@ -121,7 +122,6 @@ router.get('/category', async function(ctx) {
         if (err) {
             console.log(err)
         } else {
-            // console.log(category, "DATA CATEGORY")
             ctx.body = category
         }
     }); 
@@ -129,7 +129,6 @@ router.get('/category', async function(ctx) {
 .post('/category', async function(ctx) {
     const category = ctx.request.body;
 
-    // console.log(category)
     if(!category.categoryName) {
         // TODO error handl
         ctx.render('show_message', {message: "Sorry, you provided wrong info", type: "error"});
@@ -150,17 +149,15 @@ router.get('/category', async function(ctx) {
     }
 })
 .delete('/category', async function(ctx) {
-    console.log(ctx.request.body.id)
     await Category.findById(ctx.request.body.id).remove((err, ok) => {
         if(err) {
             console.log(err)
         } else {
-            ctx.response.body = "ok";
+            ctx.response.body = ok;
         }
     })
 
 })
 
 app.use(router.routes());
-app.listen(process.env.PORT);
-// app.listen(process.env.PORT || 3003);
+app.listen(process.env.PORT || 3003);
