@@ -162,4 +162,5 @@ router.get('/category', async function(ctx) {
 })
 
 app.use(router.routes());
-app.listen('port');
+app.listen(process.env.PORT);
+// app.listen(process.env.PORT || 3003);
