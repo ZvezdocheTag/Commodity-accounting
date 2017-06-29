@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "test application",
   "main": "index.js",
+  "engines": {
+    "node": "7.2.0"
+  },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "server": "node --harmony server.js",
