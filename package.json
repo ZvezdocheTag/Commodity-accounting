@@ -4,8 +4,8 @@
   "description": "test application",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "nodemon --harmony server.js",
+    "start": "node --harmony server.js",
+    "server": "node --harmony server.js",
     "client": "node start-client.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
