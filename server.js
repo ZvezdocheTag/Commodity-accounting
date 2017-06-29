@@ -3,6 +3,7 @@ var Pug = require('koa-pug');
 var Router = require('koa-router');
 var bodyParser = require('koa-bodyparser');
 const mongoose = require('mongoose');
+var serve = require('koa-static');
 
 const app = new Koa();
 const router = new Router();
@@ -12,7 +13,9 @@ var pug = new Pug({
   app: app 
 });
 
-
+if (process.env.NODE_ENV === 'production') {
+  app.use(serve.static('client/build'));
+}
 app.use(bodyParser());
 
 mongoose.connect('mongodb://test:123456@ds143542.mlab.com:43542/test-commodity');
