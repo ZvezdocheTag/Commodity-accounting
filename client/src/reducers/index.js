@@ -80,7 +80,7 @@ const goodies = (state = INITIAL, action) => {
     case CHANGE_GOOD:
       return {...state, changePost: {...state.changePost, loading: true}}
     case CHANGE_GOOD_SUCCESS:
-      console.log(action.payload, state.good, "REDU")
+  
       let filterCategory = state.good.map(item => {
         if(item._id === action.payload._id) {
           item.category = action.payload.category

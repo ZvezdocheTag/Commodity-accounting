@@ -57,7 +57,6 @@ router.get('/sew', (ctx) => {
         // TODO error handl
         console.log(err, "ERR")
         throw err;
-        // ctx.render('show_message', {message: "Sorry, you provided wrong info", type: "error"});
     } else {
         let newGood = new Good({
             category: good.category,
@@ -69,24 +68,18 @@ router.get('/sew', (ctx) => {
             }]
         })
 
-        await newGood.save((err, res) => {
-            if(err) {
-
-                return next(err)
-            } else {
-                ctx.response.body = res;
-            }
-        })
+        await newGood.save().then(res => ctx.response.body = res),err => console.log(err)
     }
 })
-.put('/person', async function(ctx, next) {
+.put('/person', async function(ctx) {
     let good = ctx.request.body;
     // console.log(ctx)
     if(!good.name || !good.category || !good.price || !good.retail ||  !good.id) {
         // ctx.render('show_message', {message: "Sorry, you provided wrong info", type: "error"});
     } else {
         // console.log(good, "REEE CANGE")
-        await Good.findOneAndUpdate({_id: good._id},{ 
+        let id = {_id: good._id};
+        let data = { 
             category: good.category,
             goods: [{            
                 name: good.name,
@@ -94,40 +87,37 @@ router.get('/sew', (ctx) => {
                 retail: good.retail,
                 id: good.id
             }]
-        } ,{}, (err, res) => {
-                ctx.response.body =  {res};
-                next()
+        }
+
+        await Good.update(id, { $set: data}, function(err, res) {
+            if(err) {
+                console.log(err)
+            } else {
+                ctx.response.body = res
+            }
         })
+
     }
 })
 .delete('/person/', async function(ctx) {
 
-    await Good.findById(ctx.request.body.id).remove((err, ok) => {
-        if(err) {
-            console.log(err)
-        } else {
-            ctx.response.body = ok;
-        }
-    })
+    await Good.findById(ctx.request.body.id).remove().then(res => ctx.response.body = res, err => console.log(err))
 
 })
 .get('/data',   async function(ctx) {
 
-    await Good.find({}).then((res) => {
-         console.log(res, "WORK")
-        ctx.response.body = res;
-    },
-    (err) => {
-        console.log(err, "ERR")
-    }); 
+    await Good.find({})
+            .then((res) =>
+             ctx.response.body = res,
+                err => console.log(err, "ERR")); 
  
 })
 
-router.get('/category', async function(ctx) {
+
+router.get('/category', async function(ctx, next) {
      const category = ctx.request.body;
 
     await Category.find({}).then(res => {
-             console.log(res, "WORK CATEGORY")
         ctx.response.body = res;
     }, 
     err => {
@@ -145,25 +135,11 @@ router.get('/category', async function(ctx) {
             categoryName: category.categoryName
         })
 
-        await newCategory.save((err, res) => {
-            if(err) {
-                // TODO error handl
-                 ctx.render('show_message', {message: "Database error", type: "error"});
-            } else {
-                
-                ctx.response.body = res;
-            }
-        })
+        await newCategory.save().then(res => ctx.response.body = res, err => console.log(err))
     }
 })
 .delete('/category', async function(ctx) {
-    await Category.findById(ctx.request.body.id).remove((err, ok) => {
-        if(err) {
-            console.log(err)
-        } else {
-            ctx.response.body = ok;
-        }
-    })
+    await Category.findById(ctx.request.body.id).remove().then(res => ctx.response.body = res, err => console.log(err))
 
 })
 

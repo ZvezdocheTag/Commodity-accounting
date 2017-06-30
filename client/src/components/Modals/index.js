@@ -25,7 +25,7 @@ export const Modale = (props) => {
     default:
       break;
   }
-  console.log(title)
+
   return (
         <Modal show={props.showModal} onHide={props.close}>
           <Modal.Header closeButton>
