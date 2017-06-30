@@ -16,14 +16,15 @@ npm i
 ##### develop
 
 ```
-__root directory__
+_root directory_
 
 npm start
 
 
 ```
-server listen on port 3003
-client listen on port 3000
+`server listen on port 3003`
+
+`client listen on port 3000`
 
 #### ISSUE
 
