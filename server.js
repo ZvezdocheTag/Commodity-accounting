@@ -13,6 +13,7 @@ var pug = new Pug({
   app: app 
 });
 
+
 if(typeof process.env.NODE_ENV !== "undefined") {
     if (process.env.NODE_ENV === 'production') {
     app.use(serve('client/build'));
@@ -113,12 +114,12 @@ router.get('/sew', (ctx) => {
 })
 .get('/data',   async function(ctx) {
 
-    await Good.find({},  function(err, teams) {
+    await Good.find({}, function(err, teams) {
         if (err) {
             console.log(err)
 
         } else {
-            ctx.response.body =  teams
+            ctx.body = teams
         }
     }); 
  
@@ -131,7 +132,7 @@ router.get('/category', async function(ctx) {
         if (err) {
             console.log(err)
         } else {
-            ctx.response.body = category
+            ctx.body = category
         }
     }); 
 })

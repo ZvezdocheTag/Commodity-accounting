@@ -2,9 +2,7 @@
   "name": "consumers",
   "version": "1.0.0",
   "description": "test application",
-  "proxy": "http://localhost:3003",
   "main": "index.js",
-
   "engines": {
     "node": "7.2.0"
   },

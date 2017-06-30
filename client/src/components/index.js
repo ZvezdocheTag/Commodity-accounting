@@ -5,7 +5,6 @@ import {GoodsTable} from './Table'
 import {List} from './Category'
 import {MWcontentForm, MWcontentText, MWcontentFormShort, Modale } from './Modals'
 
-
 const SwitcherModalContent = (props) => {
   switch(props.type) {
     case "ADD_GOOD":

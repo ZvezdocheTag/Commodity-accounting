@@ -25,7 +25,7 @@ export const Modale = (props) => {
     default:
       break;
   }
-
+  console.log(title)
   return (
         <Modal show={props.showModal} onHide={props.close}>
           <Modal.Header closeButton>
@@ -74,7 +74,6 @@ export const MWcontentForm = (props) => {
   }
 
   return (
-
     <div>
       <form onSubmit={actionValue} >
             <FormGroup> 

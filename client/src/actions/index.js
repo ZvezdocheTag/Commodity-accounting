@@ -25,33 +25,21 @@ export const requestCategory = (data) => ({
 export function fetchData() {
     return function(dispatch) {
 
-        return fetch('/data', {
-        headers : { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }})
-        .then(response => {
-            return response.json()
-        },
+        return fetch('/data')
+        .then(response =>  response.json()
+        ,
         error => {
             console.log("Error occure", error)
             return error;
         })
-        .then(json => {
-            console.log(json, "PRE")
-            return dispatch(requestData(json))
-        }
+        .then(json =>  dispatch(requestData(json))
         )
     }
 }
 
 export function fetchCategory() {
     return function(dispatch) {
-        return fetch('/category', {
-        headers : { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }})
+        return fetch('/category')
         .then(response =>  response.json(),
         error => console.log("Error occure", error))
         .then(json => dispatch(requestCategory(json)))
