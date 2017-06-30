@@ -113,13 +113,12 @@ router.get('/sew', (ctx) => {
 })
 .get('/data',   async function(ctx) {
 
-    await Good.find({}, function(err, teams) {
+    await Good.find({},  function(err, teams) {
         if (err) {
             console.log(err)
 
         } else {
-            console.log(teams, "DATA SEND")
-            ctx.body = teams
+            ctx.response.body =  teams
         }
     }); 
  
@@ -132,7 +131,7 @@ router.get('/category', async function(ctx) {
         if (err) {
             console.log(err)
         } else {
-            ctx.body = category
+            ctx.response.body = category
         }
     }); 
 })
