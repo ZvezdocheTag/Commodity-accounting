@@ -13,16 +13,15 @@ var pug = new Pug({
   app: app 
 });
 
-
 if(typeof process.env.NODE_ENV !== "undefined") {
     if (process.env.NODE_ENV === 'production') {
     app.use(serve('client/build'));
     }
 }
 
-
 app.use(bodyParser());
 
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://test:123456@ds143542.mlab.com:43542/test-commodity');
 const Schema = mongoose.Schema;
 const schemaGood = new Schema({
@@ -114,13 +113,12 @@ router.get('/sew', (ctx) => {
 })
 .get('/data',   async function(ctx) {
 
-    await Good.find({}, function(err, teams) {
-        if (err) {
-            console.log(err)
-
-        } else {
-            ctx.body = teams
-        }
+    await Good.find({}).then((res) => {
+         console.log(res, "WORK")
+        ctx.response.body = res;
+    },
+    (err) => {
+        console.log(err, "ERR")
     }); 
  
 })
@@ -128,13 +126,13 @@ router.get('/sew', (ctx) => {
 router.get('/category', async function(ctx) {
      const category = ctx.request.body;
 
-    await Category.find({}, function(err, category) {
-        if (err) {
-            console.log(err)
-        } else {
-            ctx.body = category
-        }
-    }); 
+    await Category.find({}).then(res => {
+             console.log(res, "WORK CATEGORY")
+        ctx.response.body = res;
+    }, 
+    err => {
+        console.log(err, "CATEGORY")
+    }) 
 })
 .post('/category', async function(ctx) {
     const category = ctx.request.body;

@@ -6,11 +6,16 @@ import {fetchPost, requestData, addGood, filterGoods,
         createCategory, createCategorySuccess, createCategoryFailure, 
         deleteGood , deleteGoodSuccess, deleteGoodFailure, 
         deleteCategory , deleteCategorySuccess, deleteCategoryFailure, 
-        changeGood, changeGoodSuccess, changeGoodFailure
+        changeGood, changeGoodSuccess, changeGoodFailure,
+        fetchCategoryNew,
+        requestCategory
 } from './actions'
 import { connect} from 'react-redux'
 
 class App extends Component {
+  componentWillMount() {
+    this.props.fetchCategoryNew();
+  }
   render() {
     return (
       <div className="App">
@@ -26,6 +31,18 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
+    fetchCategoryNew: () => {
+      console.log("WORK")
+      dispatch(fetchCategoryNew()).payload.then((res) => {
+        // console.log()
+        if(res.err) {
+          console.log(res, "ERR")
+        } else {
+          console.log(res, "GOOD")
+          dispatch(requestCategory(res.data))
+        }
+      })
+    },
     createPost: (data) => {
       dispatch(createPost(data)).payload.then(res => {
         if(res.status !== 200) {

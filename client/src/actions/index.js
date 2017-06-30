@@ -6,6 +6,7 @@ REQUEST_DATA,
 CREATE_POST, CREATE_POST_SUCCESS, CREATE_POST_FAILURE,
 CREATE_CATEGORY, CREATE_CATEGORY_SUCCESS, CREATE_CATEGORY_FAILURE,
 RESET_NEW_POST,
+FETCH_CATEGORY_NEW,
 DELETE_GOOD_SUCCESS, DELETE_GOOD_FAILURE,
  DELETE_CATEGORY_SUCCESS, DELETE_CATEGORY_FAILURE,
 CHANGE_GOOD_SUCCESS,
@@ -44,6 +45,19 @@ export function fetchCategory() {
         error => console.log("Error occure", error))
         .then(json => dispatch(requestCategory(json)))
     }
+}
+
+export const fetchCategoryNew = () => {
+const request = axios({
+    method: 'get',
+    url: `/category`,
+    headers: []
+  });
+
+  return {
+    type: FETCH_CATEGORY_NEW,
+    payload: request
+  };
 }
 
 export const getGoods = (data) => ({
