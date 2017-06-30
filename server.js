@@ -118,6 +118,7 @@ router.get('/sew', (ctx) => {
             console.log(err)
 
         } else {
+            console.log(teams, "DATA SEND")
             ctx.body = teams
         }
     }); 

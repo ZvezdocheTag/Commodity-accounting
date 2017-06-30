@@ -24,14 +24,23 @@ export const requestCategory = (data) => ({
 
 export function fetchData() {
     return function(dispatch) {
+
         return fetch('/data', {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         }})
-        .then(response => response.json(),
-        error => console.log("Error occure", error))
-        .then(json => dispatch(requestData(json))
+        .then(response => {
+            return response.json()
+        },
+        error => {
+            console.log("Error occure", error)
+            return error;
+        })
+        .then(json => {
+            console.log(json, "PRE")
+            return dispatch(requestData(json))
+        }
         )
     }
 }
