@@ -95,7 +95,7 @@ export class Layout extends React.Component {
               <div className="header">
                 <Row>
                     <Col xs={12} md={3} className="header__logo">
-                        <Logo></Logo>
+                        <Logo eventFilter={this.props.category.filterGoods}></Logo>
                     </Col>
                     <Col xs={12} md={9} className="header__menu">
                         <ButtonToolbar>

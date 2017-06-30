@@ -67,10 +67,11 @@ export const MWcontentForm = (props) => {
   let po;
   if(props.valuesInput !== false) {
     po = props.valuesInput[0].goods[0];
+
     name = po.name;
     price = po.price;
     retail = po.retail;
-    category = po.category;
+    category = props.valuesInput[0].category;
   }
 
   return (
@@ -79,8 +80,13 @@ export const MWcontentForm = (props) => {
             <FormGroup> 
               <FormControl componentClass="select" name="category"  placeholder="select">
                 <option value="Без категории" >Без категории</option>
-                {props.categories.map((item, i) => 
-                  <option value={item.categoryName} key={i}>{item.categoryName}</option>)
+                {props.categories.map((item, i) => {
+                  if(item.categoryName === category) {
+                    return <option value={item.categoryName} key={i} selected="selected" >{item.categoryName}</option>
+                  }
+                  return <option value={item.categoryName} key={i}>{item.categoryName}</option>
+                }
+                  )
                 }
               </FormControl>   
             </FormGroup>

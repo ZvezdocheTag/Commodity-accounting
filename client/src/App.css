@@ -20,6 +20,10 @@ body {
 .logo {
   font-weight: bold;
   font-size: 20px;
+  text-decoration: none;
+}
+.logo a, .logo a:hover {
+  text-decoration: none;
 }
 .logo img {
   transform: rotate(7deg);
