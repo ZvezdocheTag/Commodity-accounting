@@ -4,7 +4,11 @@ import React from 'react';
 const Item = (props) => {
 
     const handleDelete = (e) => {
-        props.eventDelete(props.id)
+        // props.eventDelete(props.id)
+        props.evDelete(e, props.id)
+        if(props.category.length === 1) {
+            props.eventFilter("all")
+        }
     }
 
     const handleFilter = (e) => {
@@ -18,6 +22,7 @@ const Item = (props) => {
 }
 
 export const List = (props) => {
+
     if(typeof props.categories !== "undefined") {
         return (
             <ul className="category-list">
@@ -26,6 +31,8 @@ export const List = (props) => {
                         <Item title={item.categoryName}
                          key={i}
                         id={item._id}
+                        category={props.categories}
+                        evDelete={props.evDelete}
                         eventDelete={props.eventDelete}
                         eventFilter={props.eventFilter}/>)
                 }

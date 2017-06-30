@@ -19,7 +19,15 @@ const SwitcherModalContent = (props) => {
                  anoter={props.anoter} 
                  close={props.close}
                  type={props.type}
-                 id={1}
+                 id={props.goodId}
+                 categories={props.categories}
+                 valuesInput={props.valuesInput !== null ? props.valuesInput : false}/>)
+    case "DELETE_CATEGORY":
+        return (<MWcontentText 
+                 anoter={props.anoter} 
+                 close={props.close}
+                 type={props.type}
+                 id={props.categoryId}
                  categories={props.categories}
                  valuesInput={props.valuesInput !== null ? props.valuesInput : false}/>)
     case "ADD_CATEGORY":
@@ -45,7 +53,9 @@ export class Layout extends React.Component {
       showModal: false,
       formType: false,
       modalValue: null,
-      eventType: "default"
+      eventType: "default",
+      goodId: 0,
+      categoryId:0
     }
   }
 
@@ -62,7 +72,11 @@ export class Layout extends React.Component {
   }
 
   deleteGood(e, id) {
-    this.setState({ showModal: true, formType: this.props.category.deleteGood, eventType: "DELETE_GOOD"})
+    this.setState({ showModal: true, formType: this.props.category.deleteGood, eventType: "DELETE_GOOD", goodId: id})
+  }
+
+  deleteCategory(e, id) {
+    this.setState({ showModal: true, formType: this.props.category.deleteCategory, eventType: "DELETE_CATEGORY", categoryId: id})
   }
 
   addCategory(e) {
@@ -95,24 +109,34 @@ export class Layout extends React.Component {
               <div className="main">
                 <Row>
                     <Col xs={12} md={3} className="aside">
-                        <List categories={category} eventDelete={this.props.category.deleteCategory} eventFilter={this.props.category.filterGoods}/>
+                        <List
+                           categories={category} 
+                           evDelete={this.deleteCategory.bind(this)}
+                           eventDelete={this.props.category.deleteCategory} 
+                           eventFilter={this.props.category.filterGoods}/>
                     </Col>
                     <Col xs={12} md={9} className="content">
                         <GoodsTable 
                         deletGoodHandle={this.deleteGood.bind(this)}
                         goods={this.props.category.goodies.good}
                         events={this.props.category} 
+                        close={this.close.bind(this)}
                         all={this.props.category.goodies} 
                         changeGoodsHandle={this.changeGoods.bind(this)}/>
                     </Col>
                 </Row>
               </div>
             </Grid>
-            <Modale close={this.close.bind(this)} showModal={this.state.showModal}>
+            <Modale close={
+                this.close.bind(this)} 
+                showModal={this.state.showModal}
+                title={this.state.eventType}>
               <SwitcherModalContent 
                  type={this.state.eventType}
                  anoter={this.state.formType} 
                  categories={category}
+                 goodId={this.state.goodId}
+                 categoryId={this.state.categoryId}
                  close={this.close.bind(this)}
                  valuesInput={this.state.modalValue !== null ? this.state.modalValue : false}/>
             </Modale> 

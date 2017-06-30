@@ -126,7 +126,7 @@ export const deleteGoodFailure = (response) => {
 
 export const changeGood = (data) => {
     const request = axios('/person', {
-        method: 'PUT',
+        method: 'put',
         data: {...data}
     })
 

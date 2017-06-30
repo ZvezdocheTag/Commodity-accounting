@@ -13,12 +13,12 @@ var pug = new Pug({
   app: app 
 });
 
+if(typeof process.env.NODE_ENV !== "undefined") {
+    if (process.env.NODE_ENV === 'production') {
+    app.use(serve('client/build'));
+    }
+}
 
-console.log(process.env.NODE_ENV )
-
-// if (process.env.NODE_ENV === 'production') {
-//   app.use(serve('client/build'));
-// }
 
 app.use(bodyParser());
 
@@ -43,13 +43,21 @@ const Category = mongoose.model('Category', schemaCategory)
 router.get('/sew', (ctx) => {
     ctx.render('few')
 })
-.post('/person',async function (ctx) {
+.post('/person',async function (ctx, next) {
     const good = ctx.request.body;
-    const goodItem = good.goods[0];
+    let goodItem;
+
+    try {
+       goodItem = good.goods[0] 
+    } catch(err) {
+        throw err;
+    }
 
     if(!goodItem.name || !good.category || !goodItem.price || !goodItem.retail || !goodItem.id) {
         // TODO error handl
-        ctx.render('show_message', {message: "Sorry, you provided wrong info", type: "error"});
+        console.log(err, "ERR")
+        throw err;
+        // ctx.render('show_message', {message: "Sorry, you provided wrong info", type: "error"});
     } else {
         let newGood = new Good({
             category: good.category,
@@ -63,20 +71,21 @@ router.get('/sew', (ctx) => {
 
         await newGood.save((err, res) => {
             if(err) {
-                // TODO error handl
-                 ctx.render('show_message', {message: "Database error", type: "error"});
+
+                return next(err)
             } else {
                 ctx.response.body = res;
             }
         })
     }
 })
-.put('/person', async function(ctx) {
+.put('/person', async function(ctx, next) {
     let good = ctx.request.body;
+    // console.log(ctx)
     if(!good.name || !good.category || !good.price || !good.retail ||  !good.id) {
-        console.log("ERR PUT")
-        ctx.render('show_message', {message: "Sorry, you provided wrong info", type: "error"});
+        // ctx.render('show_message', {message: "Sorry, you provided wrong info", type: "error"});
     } else {
+        // console.log(good, "REEE CANGE")
         await Good.findOneAndUpdate({_id: good._id},{ 
             category: good.category,
             goods: [{            
@@ -86,8 +95,8 @@ router.get('/sew', (ctx) => {
                 id: good.id
             }]
         } ,{}, (err, res) => {
-                // console.log(res)
-                ctx.response.body = {res};
+                ctx.response.body =  {res};
+                next()
         })
     }
 })

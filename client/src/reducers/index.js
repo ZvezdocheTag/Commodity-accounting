@@ -18,7 +18,6 @@ const INITIAL = {newGood: [], posts: [],
       type: filterURL,
       goods: []
     },
-    categoryNew: [],
     newPost:{post:null, error: null, loading: false},
     newCategory:{post:null, error: null, loading: false},
     deletedPost: {post: null, error:null, loading: false},
@@ -81,8 +80,10 @@ const goodies = (state = INITIAL, action) => {
     case CHANGE_GOOD:
       return {...state, changePost: {...state.changePost, loading: true}}
     case CHANGE_GOOD_SUCCESS:
+      console.log(action.payload, state.good, "REDU")
       let filterCategory = state.good.map(item => {
         if(item._id === action.payload._id) {
+          item.category = action.payload.category
           item.goods[0] = action.payload
         } 
         return item;

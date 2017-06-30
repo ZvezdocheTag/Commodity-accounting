@@ -66,12 +66,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         }  
       }).catch(err => {
         console.log(err, "delete")
+        return err.response;
       })
     },
     filterGoods: (category) => {
       dispatch(filterGoods(category))
     },
     changeGood: (data) => {
+    
       dispatch(changeGood(data)).payload.then((res) => {
         if(res.status !== 200) {
           dispatch(changeGoodFailure(res.data));

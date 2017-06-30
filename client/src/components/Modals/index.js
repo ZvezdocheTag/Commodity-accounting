@@ -3,10 +3,33 @@ import React from 'react';
 import { ButtonToolbar, Button,FormGroup, FormControl, Modal } from 'react-bootstrap'
 
 export const Modale = (props) => {
+
+  let title = "Заголовок";
+
+  switch(props.title) {
+    case "ADD_GOOD":
+        title = "Добавить товар"
+        break;
+    case "DELETE_GOOD":
+        title = "Удалить товар"
+        break;
+    case "DELETE_CATEGORY":
+        title = "Удалить категорию"
+        break;
+    case "ADD_CATEGORY":
+        title = "Добавить категорию"
+        break;
+    case "CHANGE_GOODS":
+        title = "Изменить товар"
+        break;
+    default:
+      break;
+  }
+
   return (
         <Modal show={props.showModal} onHide={props.close}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>{title}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
               {props.children}
@@ -40,13 +63,14 @@ export const MWcontentForm = (props) => {
   }
 
   
-  let {name, price, retail} = "";
+  let {name, price, retail, category} = "";
   let po;
   if(props.valuesInput !== false) {
     po = props.valuesInput[0].goods[0];
     name = po.name;
     price = po.price;
     retail = po.retail;
+    category = po.category;
   }
 
   return (
@@ -54,8 +78,8 @@ export const MWcontentForm = (props) => {
     <div>
       <form onSubmit={actionValue} >
             <FormGroup> 
-              <FormControl componentClass="select" name="category"  placeholder="select" defaultValue="Без категории">
-                {/*<option value="Без категории" >{item.categoryName}</option>*/}
+              <FormControl componentClass="select" name="category"  placeholder="select">
+                <option value="Без категории" >Без категории</option>
                 {props.categories.map((item, i) => 
                   <option value={item.categoryName} key={i}>{item.categoryName}</option>)
                 }
@@ -106,6 +130,7 @@ export const MWcontentText = (props) => {
 
   let handle = (e) => {
     props.anoter(props.id)
+    props.close()
   }
 
   return (
