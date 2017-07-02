@@ -3,7 +3,7 @@ import update from 'immutability-helper'
 import {GET_GOODS,
   FILTER_GOODS,
   REQUEST_CATEGORY,REQUEST_DATA,
-  CREATE_POST, CREATE_POST_SUCCESS, CREATE_POST_FAILURE,
+  CREATE_GOOD, CREATE_GOOD_SUCCESS, CREATE_GOOD_FAILURE,
   CREATE_CATEGORY, CREATE_CATEGORY_SUCCESS, CREATE_CATEGORY_FAILURE,
   RESET_NEW_POST,
   DELETE_GOOD, DELETE_GOOD_SUCCESS, DELETE_GOOD_FAILURE,
@@ -32,11 +32,12 @@ const goodies = (state = INITIAL, action) => {
       return update(state, {good: {$set: action.data}})
     case REQUEST_CATEGORY:  
       return update(state, {categoryNew: {$set: action.data}})
-    case CREATE_POST:
+    case CREATE_GOOD:
       return {...state, newPost: {...state.newPost, loading: true}}
-    case CREATE_POST_SUCCESS:
+    case CREATE_GOOD_SUCCESS:
+
       return update(state, {good: {$push: [action.newPost]}})
-    case CREATE_POST_FAILURE:
+    case CREATE_GOOD_FAILURE:
       error = action.payload || {message: action.payload.message}
       return {...state, newPost: {post: null, error: error, loading: false}}
 

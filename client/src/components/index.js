@@ -67,7 +67,7 @@ export class Layout extends React.Component {
   }
 
   addGoods(e) {
-    this.setState({ showModal: true, formType: this.props.category.createPost, eventType: "ADD_GOOD" })
+    this.setState({ showModal: true, formType: this.props.category.createProduct, eventType: "ADD_GOOD" })
   }
 
   deleteGood(e, id) {

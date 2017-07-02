@@ -54,9 +54,8 @@ router.get('/sew', (ctx) => {
     }
 
     if(!goodItem.name || !good.category || !goodItem.price || !goodItem.retail || !goodItem.id) {
-        // TODO error handl
-        console.log(err, "ERR")
-        throw err;
+        ctx.response.status = 400;
+        ctx.body = good
     } else {
         let newGood = new Good({
             category: good.category,
@@ -67,8 +66,16 @@ router.get('/sew', (ctx) => {
                 id: goodItem.id
             }]
         })
+        try{
+            await newGood.save()
+                .then(
+                    res =>  ctx.response.body = res,
+                    err => console.log(err, "MONGOOSE DATA ERR")
+                )
+        } catch(e) {
+            console.log(e, "error post person")
+        }
 
-        await newGood.save().then(res => ctx.response.body = res),err => console.log(err)
     }
 })
 .put('/person', async function(ctx) {
@@ -88,58 +95,88 @@ router.get('/sew', (ctx) => {
                 id: good.id
             }]
         }
+        try {
+            await Good.update(id, { $set: data}, function(err, res) {
+                if(err) {
+                    console.log(err)
+                } else {
+                    ctx.response.body = res
+                }
+            })
+        } catch(e) {
+            console.log(e, "err put person")
+        }
 
-        await Good.update(id, { $set: data}, function(err, res) {
-            if(err) {
-                console.log(err)
-            } else {
-                ctx.response.body = res
-            }
-        })
 
     }
 })
 .delete('/person/', async function(ctx) {
-
-    await Good.findById(ctx.request.body.id).remove().then(res => ctx.response.body = res, err => console.log(err))
+    try {
+        await Good.findById(ctx.request.body.id)
+            .remove()
+            .then(
+                res => ctx.response.body = res,
+                err => console.log(err)
+            )
+    } catch(e) {
+        console.log(e, "error delete person")
+    }
 
 })
 .get('/data',   async function(ctx) {
-
-    await Good.find({})
-            .then((res) =>
-             ctx.response.body = res,
-                err => console.log(err, "ERR")); 
- 
+    try {
+            await Good.find({})
+            .then(
+                res => ctx.response.body = res,
+                err => console.log(err, "ERR")
+            )
+    } catch(e) {
+        console.log(e, "err get data")
+    }
 })
 
 
 router.get('/category', async function(ctx, next) {
-     const category = ctx.request.body;
+    const category = ctx.request.body;
 
-    await Category.find({}).then(res => {
-        ctx.response.body = res;
-    }, 
-    err => {
-        console.log(err, "CATEGORY")
-    }) 
+    await Category.find({})
+        .then(
+            res => ctx.response.body = res, 
+            err => console.log(err, "CATEGORY err")
+        ) 
 })
 .post('/category', async function(ctx) {
     const category = ctx.request.body;
 
     if(!category.categoryName) {
-        // TODO error handl
         ctx.render('show_message', {message: "Sorry, you provided wrong info", type: "error"});
     } else {
         let newCategory = new Category({
             categoryName: category.categoryName
         })
 
-        await newCategory.save().then(res => ctx.response.body = res, err => console.log(err))
+        try {
+            await newCategory.save()
+            .then(
+                res => ctx.response.body = res,
+                err => console.log(err)
+            )
+        } catch(e) {
+            console.log(e, "post category err")
+        }
     }
 })
 .delete('/category', async function(ctx) {
-    await Category.findById(ctx.request.body.id).remove().then(res => ctx.response.body = res, err => console.log(err))
+    try {
+        await Category.findById(ctx.request.body.id)
+        .remove()
+        .then(
+            res => ctx.response.body = res,
+            err => console.log(err)
+        )
+    } catch(e) {
+        console.log(e, "delete category error")
+    }
 
 })
 

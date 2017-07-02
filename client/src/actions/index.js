@@ -3,7 +3,7 @@ import axios from 'axios'
 import {
 REQUEST_CATEGORY,
 REQUEST_DATA,
-CREATE_POST, CREATE_POST_SUCCESS, CREATE_POST_FAILURE,
+CREATE_GOOD, CREATE_GOOD_SUCCESS, CREATE_GOOD_FAILURE,
 CREATE_CATEGORY, CREATE_CATEGORY_SUCCESS, CREATE_CATEGORY_FAILURE,
 RESET_NEW_POST,
 FETCH_CATEGORY_NEW,
@@ -65,7 +65,7 @@ export const getGoods = (data) => ({
     data
 })
 
-export const  createPost = (data) => {
+export const  createProduct = (data) => {
     const request = axios({
         method: 'post',
         url: '/person',
@@ -83,21 +83,21 @@ export const  createPost = (data) => {
       })
 
       return {
-          type: CREATE_POST,
+          type: CREATE_GOOD,
           payload: request
       }
 }
 
-export const  createPostSuccess = (newPost) => {
+export const  createProductSuccess = (newPost) => {
     return {
-        type: CREATE_POST_SUCCESS,
+        type: CREATE_GOOD_SUCCESS,
         newPost
     }
 }
 
-export const  createPostFailure = (err) => {
+export const  createProductFailure = (err) => {
     return {
-        type: CREATE_POST_FAILURE,
+        type: CREATE_GOOD_FAILURE,
         err
     }
 }

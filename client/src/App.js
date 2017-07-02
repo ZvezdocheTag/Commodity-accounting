@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Layout} from './components'
 import './App.css';
 import {fetchPost, requestData, addGood, filterGoods,
-        createPost, createPostSuccess, createPostFailure, 
+        createProduct, createProductSuccess, createProductFailure, 
         createCategory, createCategorySuccess, createCategoryFailure, 
         deleteGood , deleteGoodSuccess, deleteGoodFailure, 
         deleteCategory , deleteCategorySuccess, deleteCategoryFailure, 
@@ -32,26 +32,22 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     fetchCategoryNew: () => {
-      console.log("WORK")
       dispatch(fetchCategoryNew()).payload.then((res) => {
         // console.log()
         if(res.err) {
           console.log(res, "ERR")
         } else {
-          console.log(res, "GOOD")
           dispatch(requestCategory(res.data))
         }
       })
     },
-    createPost: (data) => {
-      dispatch(createPost(data)).payload.then(res => {
-        if(res.status !== 200) {
-          dispatch(createPostFailure(res.data));
-          throw res;
-        } else {
-          dispatch(createPostSuccess(res.data));
-        }  
-      })
+    createProduct: (data) => {
+      dispatch(createProduct(data))
+        .payload.then(res => dispatch(createProductSuccess(res.data)))
+          .catch(err => {
+            console.log(err,  "ERR CATCH ")
+              // dispatch(createProductFailure(err.data))
+          })
     },
     createCategory: (data) => {
       dispatch(createCategory(data)).payload.then(res => {
